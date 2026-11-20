@@ -1,0 +1,6 @@
+DOCUMENT TYPE: POLICE_REPORT
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-M-006
+Claimant Name: Anil Kumar
+Incident Date: 2026-03-14
+Vehicle Registration: HR26BB2222

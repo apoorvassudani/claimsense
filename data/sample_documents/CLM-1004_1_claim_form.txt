@@ -1,0 +1,7 @@
+DOCUMENT TYPE: CLAIM_FORM
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-M-002
+Claimant Name: Priya Nair
+Incident Date: 2026-03-02
+Vehicle Registration: KA01MN4455
+Total Amount: INR 310000.00

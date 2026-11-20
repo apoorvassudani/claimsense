@@ -1,0 +1,9 @@
+DOCUMENT TYPE: MEDICAL_BILL
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-H-002
+Claimant Name: Meena Pillay
+Incident Date: 2026-02-05
+Document Date: 2026-02-07
+Invoice Number: BILL-3120
+Provider: Sunrise Clinic
+Total Amount: INR 45000.00

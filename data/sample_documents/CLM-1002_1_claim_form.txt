@@ -1,0 +1,6 @@
+DOCUMENT TYPE: CLAIM_FORM
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-H-001
+Claimant Name: Kavya Rao
+Incident Date: 2026-01-20
+Total Amount: INR 82000.00

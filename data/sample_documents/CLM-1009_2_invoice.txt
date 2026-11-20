@@ -1,0 +1,10 @@
+DOCUMENT TYPE: INVOICE
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-M-007
+Claimant Name: Ramesh Gupta
+Incident Date: 2026-03-19
+Document Date: 2026-03-19
+Invoice Number: QF-123
+Provider: QuickFix Motors
+Vehicle Registration: HR26CC3333
+Total Amount: INR 74500.00

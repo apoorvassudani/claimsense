@@ -1,0 +1,7 @@
+DOCUMENT TYPE: CLAIM_FORM
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-M-001
+Claimant Name: Deepak Joshi
+Incident Date: 2026-02-18
+Vehicle Registration: UP14AB1234
+Total Amount: INR 48500.00

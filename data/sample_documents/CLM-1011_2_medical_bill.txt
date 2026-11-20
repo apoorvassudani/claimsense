@@ -1,0 +1,9 @@
+DOCUMENT TYPE: MEDICAL_BILL
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-H-003
+Claimant Name: Farhan Ali
+Incident Date: 2026-01-12
+Document Date: 2026-01-18
+Invoice Number: BILL-7781
+Provider: Lifeline Hospital
+Total Amount: INR 120000.00

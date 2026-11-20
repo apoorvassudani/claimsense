@@ -1,0 +1,7 @@
+DOCUMENT TYPE: CLAIM_FORM
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-M-003
+Claimant Name: Rahul Verma
+Incident Date: 2025-10-20
+Vehicle Registration: DL3CAF0001
+Total Amount: INR 60000.00

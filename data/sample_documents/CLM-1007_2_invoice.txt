@@ -1,0 +1,10 @@
+DOCUMENT TYPE: INVOICE
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+Policy Number: POL-M-005
+Claimant Name: Vikram Singh
+Incident Date: 2026-03-10
+Document Date: 2026-03-10
+Invoice Number: QF-101
+Provider: QuickFix Motors
+Vehicle Registration: HR26AA1111
+Total Amount: INR 72000.00
