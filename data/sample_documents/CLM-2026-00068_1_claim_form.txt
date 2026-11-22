@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/HLT/2026/000031
+
+Dear Sir/Madam,
+
+I, Aarav Joshi, residing at House No. 826, Malviya Nagar, Jaipur - 302017, wish to intimate a claim under the above policy. I was admitted to hospital on 15 June 2026 for dengue fever - supportive care.
+I request reimbursement of ₹49,850.00 as per the attached documents.
+
+Yours faithfully,
+Aarav Joshi
+Date: 22-06-2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

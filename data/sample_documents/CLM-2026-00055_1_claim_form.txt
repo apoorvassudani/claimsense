@@ -1,0 +1,18 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/MTR/2025/000015
+Product             : Private Car Package Policy
+Name of Insured     : Suresh Verma
+Contact Number      : +91 55171 79158
+Address             : House No. 474, Lajpat Nagar, New Delhi - 110024
+Date of Loss        : 01.05.2026
+Place of Loss       : Lajpat Nagar, New Delhi
+Vehicle Reg. No.    : DL 3C ZV 2165
+Nature of Loss      : Hit by an unidentified vehicle while parked
+Amount Claimed      : INR 31,836.40
+Date of Intimation  : 01.05.2026
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

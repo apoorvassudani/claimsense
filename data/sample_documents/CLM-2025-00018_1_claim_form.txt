@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/PRP/2025/000044
+
+Dear Sir/Madam,
+
+I, Farah Verma, residing at House No. 812, Lajpat Nagar, New Delhi - 110024, wish to intimate a claim under the above policy. On 01 September 2025, my home suffered damage: false ceiling collapse after heavy rain.
+I request reimbursement of ₹1,24,608.00 as per the attached documents.
+
+Yours faithfully,
+Farah Verma
+Date: 04 September 2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000005
+
+Dear Sir/Madam,
+
+I, Aditi Sharma, residing at House No. 563, Gomti Nagar, Lucknow - 226010, wish to intimate a claim under the above policy. On 15 September 2025, my vehicle UP 32 ZV 6345 (Toyota Innova Crysta) was damaged: rear-ended at a traffic signal.
+I request reimbursement of Rs 32414.60 as per the attached documents.
+
+Yours faithfully,
+Aditi Sharma
+Date: 2025-09-17
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

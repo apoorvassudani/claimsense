@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000022
+
+Dear Sir/Madam,
+
+I, Neha Das, residing at House No. 223, Koramangala, Bengaluru - 560034, wish to intimate a claim under the above policy. On 23 April 2026, my vehicle KA 01 ZY 7146 (Toyota Innova Crysta) was damaged: front damage after hitting a road divider.
+I request reimbursement of ₹42,267.60 as per the attached documents.
+
+Yours faithfully,
+Neha Das
+Date: 25-04-2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

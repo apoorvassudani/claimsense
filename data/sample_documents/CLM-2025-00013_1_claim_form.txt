@@ -1,0 +1,18 @@
+CLAIM FORM - PROPERTY
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/PRP/2024/000049
+  Product .................. Home Shield Policy
+Section 2: Insured person
+  Full name ................ LAKSHMI SETHI
+  Mobile ................... +91 55648 17150
+Section 3: Loss details
+  Incident on .............. 17 July 2025
+  Location ................. Lajpat Nagar, New Delhi
+  Description .............. Water seepage from overhead tank damaged walls and flooring
+  Estimated loss ........... Rs. 1,14,342/-
+
+Signed by the insured on 21 July 2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

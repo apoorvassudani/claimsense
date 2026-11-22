@@ -1,0 +1,18 @@
+KESTREL CAR CLINIC
+Koramangala, Bengaluru - 560034     GSTIN: 29AABHT1666K1Z0
+
+TAX INVOICE
+Invoice No: KES/00034          Date: 11-06-2025
+Customer: Aditya Bhatt     Vehicle: KA 01 ZY 8285     Model: Tata Punch
+Insurance Policy: NW/MTR/2024/000065
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Quarter panel (RH)                         1        8,800.00
+2   Tail lamp (RH)                             1        2,540.00
+3   Labour charges                             1        5,290.00
+----------------------------------------------------------------
+                                       Sub-total       16,630.00
+                                       GST @ 18%        2,993.40
+                                     GRAND TOTAL     Rs 19623.40
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

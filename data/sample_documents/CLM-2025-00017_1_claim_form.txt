@@ -1,0 +1,19 @@
+CLAIM FORM - MOTOR
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/MTR/2024/000054
+  Product .................. Private Car Package Policy
+Section 2: Insured person
+  Full name ................ KUNAL DESHPANDE
+  Mobile ................... +91 55918 27311
+Section 3: Loss details
+  Incident on .............. 12/08/2025
+  Location ................. Madhapur, Hyderabad
+  Description .............. Side collision while turning
+  Vehicle .................. TG 07 ZV 5736 (Maruti Swift)
+  Estimated loss ........... INR 29,039.80
+
+Signed by the insured on 18/08/2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

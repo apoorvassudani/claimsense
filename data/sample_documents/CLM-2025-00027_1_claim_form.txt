@@ -1,0 +1,19 @@
+CLAIM FORM - MOTOR
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/MTR/2024/000018
+  Product .................. Private Car Package Policy
+Section 2: Insured person
+  Full name ................ ISHITA GUPTA
+  Mobile ................... +91 55272 95441
+Section 3: Loss details
+  Incident on .............. 27/10/2025
+  Location ................. Dwarka Sector 12, New Delhi
+  Description .............. Rear-ended at a traffic signal
+  Vehicle .................. DL 9C ZW 9114 (Maruti Swift)
+  Estimated loss ........... Rs 39022.60
+
+Signed by the insured on 04/11/2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

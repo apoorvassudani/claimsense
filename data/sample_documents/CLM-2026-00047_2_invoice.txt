@@ -1,0 +1,18 @@
+REDWOOD AUTO CARE
+Madhapur, Hyderabad - 500081     GSTIN: 36AABGT1629K1Z8
+
+TAX INVOICE
+Invoice No: RED/00029          Date: 05 March 2026
+Customer: Kunal Deshpande     Vehicle: TG 07 ZV 5736     Model: Maruti Swift
+Insurance Policy: NW/MTR/2025/000055
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Headlamp assembly (RH)                     1        9,640.00
+2   Front bumper assembly                      1       12,350.00
+3   Labour charges                             1        7,270.00
+----------------------------------------------------------------
+                                       Sub-total       29,260.00
+                                       GST @ 18%        5,266.80
+                                     GRAND TOTAL   Rs. 34,526.80
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

@@ -1,0 +1,18 @@
+CLAIM FORM - HEALTH
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/HLT/2025/000032
+  Product .................. Individual Health Policy
+Section 2: Insured person
+  Full name ................ Shreya Gupta
+  Mobile ................... +91 55978 11315
+Section 3: Loss details
+  Admitted on .............. 09 January 2026
+  Location ................. Sector 15, Faridabad
+  Description .............. Gallstones - laparoscopic cholecystectomy
+  Estimated loss ........... INR 1,03,100.00
+
+Signed by the insured on 14 January 2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

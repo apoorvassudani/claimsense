@@ -3,10 +3,10 @@ One trace ID covers the whole request."""
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ..models import Claim, Document, Extraction, Finding, TraceEvent
+from ..models import Claim, Claimant, Document, Extraction, Finding, TraceEvent
 from ..observability import StageRecorder, current_trace_id, log_event, tracer
 from .extraction import extract_document
-from .graph import build_claim_graph, shared_identifiers
+from .graph import build_claim_graph, linked_claims, norm
 from .rules import ClaimContext, evaluate, score
 
 
@@ -39,14 +39,21 @@ def process_claim(db: Session, claim: Claim) -> dict:
             dup_docs = db.scalars(select(Claim.claim_number).join(Document)
                                   .where(Document.sha256.in_(hashes), Claim.claim_id != claim.claim_id)).all()
             dup_inv = set()
-            for f in fields:
-                if f.get("invoice_number"):
-                    for other in db.scalars(select(Extraction).join(Document)
-                                            .where(Document.claim_id != claim.claim_id, Extraction.is_valid)):
-                        of = other.fields
-                        if (of.get("invoice_number") == f["invoice_number"]
-                                and (of.get("provider_name") or "").lower() == (f.get("provider_name") or "").lower()):
-                            dup_inv.add(other.document.claim.claim_number)
+            mine = {(norm("PROVIDER", f.get("provider_name") or ""), (f.get("invoice_number") or "").strip().lower())
+                    for f in fields if f.get("invoice_number")}
+            if mine:
+                for other in db.scalars(select(Extraction).join(Document)
+                                        .where(Document.claim_id != claim.claim_id, Extraction.is_valid)):
+                    of = other.fields
+                    key = (norm("PROVIDER", of.get("provider_name") or ""), (of.get("invoice_number") or "").strip().lower())
+                    if of.get("invoice_number") and key in mine:
+                        dup_inv.add(other.document.claim.claim_number)
+            links = {}
+            for ident, numbers in linked_claims(db, claim).items():
+                rows = db.execute(select(Claim.claim_number, Claimant.claimant_code, Claim.incident_date)
+                                  .join(Claimant, Claimant.claimant_id == Claim.claimant_id)
+                                  .where(Claim.claim_number.in_(numbers))).all()
+                links[ident] = [{"claim_number": n, "claimant_code": cc, "incident_date": d} for n, cc, d in rows]
             ctx = ClaimContext(
                 claim_number=claim.claim_number, claim_type=claim.claim_type,
                 policy_number=claim.policy.policy_number, policy_start=claim.policy.start_date,
@@ -55,7 +62,7 @@ def process_claim(db: Session, claim: Claim) -> dict:
                 reported_date=claim.reported_date, claimed_amount=float(claim.claimed_amount),
                 doc_types={d.doc_type for d in claim.documents}, extractions=fields,
                 duplicate_docs=sorted(set(dup_docs)), duplicate_invoices=sorted(dup_inv),
-                shared_ids=shared_identifiers(db, claim))
+                claimant_code=claim.claimant.claimant_code, links=links)
             hits = evaluate(ctx)
         with rec.stage("db.save_findings"):
             claim.findings.clear()

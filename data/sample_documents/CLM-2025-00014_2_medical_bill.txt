@@ -1,0 +1,17 @@
+SUNVALE MEDICAL CENTRE
+Andheri West, Mumbai
+
+FINAL HOSPITAL BILL
+Bill No: SUB-00011     UHID: 954105
+Patient Name: VARUN PILLAI
+Date of Admission: 30.07.2025
+Date of Discharge: 05.08.2025
+Diagnosis: Dengue fever - supportive care
+------------------------------------------------------------
+Room charges (6 days @ 3500)                       21,000.00
+Medicines and consumables                          14,450.00
+Laboratory and radiology                            5,170.00
+------------------------------------------------------------
+NET AMOUNT                                      Rs. 40,620/-
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

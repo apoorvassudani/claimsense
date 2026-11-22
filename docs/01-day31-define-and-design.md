@@ -21,7 +21,7 @@ logged and reviewable.
 | **Ops / model reviewer** | Monitor AI runs, failures, p95 latency, alerts; drill into traces |
 
 ## 3. MVP scope
-**In:** claim + document CRUD, text/PDF ingestion, LLM field extraction with Pydantic validation, 12 deterministic
+**In:** claim + document CRUD, text/PDF ingestion, LLM field extraction with Pydantic validation, 14 deterministic
 rules, risk score, Postgres-backed relationship graph, trace/log/metrics endpoints, seed data, failure simulation,
 React UI (Day 33).
 
@@ -51,7 +51,7 @@ See [02-architecture.md](02-architecture.md).
 | Backend | FastAPI + Pydantic v2 + SQLAlchemy 2 | Mandatory; typed validation of inputs and LLM outputs |
 | Database | PostgreSQL 16 | Mandatory; relational integrity + JSON columns for extracted fields |
 | Graph | Node/edge tables **inside PostgreSQL** | Keeps the mandatory 3-layer stack; 2-hop queries are enough for MVP. Neo4j is a possible stretch goal |
-| AI | Option A: free-tier hosted model (Groq or Gemini) via OpenAI-compatible API; `mock` provider for offline tests | No local models; one client, swappable provider |
+| AI | Option A: OpenAI gpt-oss-20b hosted on Groq (free tier) via OpenAI-compatible API; Azure OpenAI planned; `mock` provider for offline tests | No local models; one client, swappable provider |
 | AI role | Extraction only | Scores and decisions must be deterministic and auditable |
 | Tracing | OpenTelemetry SDK, console exporter + `trace_events` table | Trace explorer works without paid tooling |
 | Logging | JSON Lines, secrets/doc text blocked | Searchable, safe |

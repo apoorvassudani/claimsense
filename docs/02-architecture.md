@@ -10,7 +10,7 @@ flowchart LR
         P --> RU[Rules engine]
         O[OpenTelemetry + JSON logs]
     end
-    X -->|synthetic text only| LLM["Hosted LLM<br/>Groq / Gemini"]
+    X -->|synthetic text only| LLM["OpenAI gpt-oss-20b<br/>via Groq"]
     API --> DB[("PostgreSQL<br/>claims · documents · extractions<br/>findings · graph · ai_runs · trace_events")]
 ```
 
@@ -32,7 +32,7 @@ sequenceDiagram
         API->>DB: db.save_extraction + ai_run + trace_events
     end
     API->>DB: graph.build (nodes/edges)
-    API->>API: rules.evaluate (12 deterministic rules)
+    API->>API: rules.evaluate (14 deterministic rules)
     API->>DB: db.save_findings, risk score
     API-->>UI: findings, risk, run IDs, trace_id (+ X-Trace-Id header)
 ```

@@ -1,0 +1,18 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/MTR/2025/000069
+Product             : Private Car Package Policy
+Name of Insured     : SWATI MEHTA
+Contact Number      : +91 55607 29058
+Address             : House No. 717, Sector 15, Faridabad - 121007
+Date of Loss        : 24/06/2026
+Place of Loss       : Sector 15, Faridabad
+Vehicle Reg. No.    : HR 51 ZX 3102
+Nature of Loss      : Hit by an unidentified vehicle while parked
+Amount Claimed      : INR 40,013.80
+Date of Intimation  : 02/07/2026
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

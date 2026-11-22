@@ -1,0 +1,19 @@
+SILVERFERN MOTOR WORKS
+Whitefield, Bengaluru - 560066     GSTIN: 29AABGT1814K1Z4
+
+TAX INVOICE
+Invoice No: SIL/00007          Date: 26 Feb 2026
+Customer: M. Menon     Vehicle: KA 53 ZY 1355     Model: Hyundai Creta
+Insurance Policy: NW/MTR/2025/000007
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Radiator                                   1       10,910.00
+2   Front bumper assembly                      1       12,680.00
+3   Headlamp assembly (RH)                     1        9,340.00
+4   Labour charges                             1        4,240.00
+----------------------------------------------------------------
+                                       Sub-total       37,170.00
+                                       GST @ 18%        6,690.60
+                                     GRAND TOTAL   Rs. 43,860.60
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

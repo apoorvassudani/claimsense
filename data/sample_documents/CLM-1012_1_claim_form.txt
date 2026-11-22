@@ -1,6 +1,0 @@
-DOCUMENT TYPE: CLAIM_FORM
-SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
-Policy Number: POL-P-001
-Claimant Name: Arjun Mehta
-Incident Date: 2025-12-01
-Total Amount: INR 150000.00

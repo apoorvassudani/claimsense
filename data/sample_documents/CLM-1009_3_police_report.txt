@@ -1,6 +1,0 @@
-DOCUMENT TYPE: POLICE_REPORT
-SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
-Policy Number: POL-M-007
-Claimant Name: Ramesh Gupta
-Incident Date: 2026-03-19
-Vehicle Registration: HR26CC3333

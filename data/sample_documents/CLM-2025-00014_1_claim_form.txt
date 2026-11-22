@@ -1,0 +1,17 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/HLT/2025/000037
+Product             : Individual Health Policy
+Name of Insured     : VARUN PILLAI
+Contact Number      : +91 55760 56652
+Address             : House No. 135, Andheri West, Mumbai - 400058
+Date of Admission   : 2025-07-30
+Place of Loss       : Andheri West, Mumbai
+Nature of Loss      : Dengue fever - supportive care
+Amount Claimed      : Rs 40620.00
+Date of Intimation  : 2025-08-05
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

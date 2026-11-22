@@ -1,0 +1,19 @@
+CLAIM FORM - MOTOR
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/MTR/2025/000012
+  Product .................. Private Car Package Policy
+Section 2: Insured person
+  Full name ................ Manish Chopra
+  Mobile ................... +91 55272 34454
+Section 3: Loss details
+  Incident on .............. 2025-10-08
+  Location ................. Sector 15, Faridabad
+  Description .............. Side collision while turning
+  Vehicle .................. HR 51 ZX 3386 (Hyundai Creta)
+  Estimated loss ........... ₹32,237.60
+
+Signed by the insured on 2025-10-10
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

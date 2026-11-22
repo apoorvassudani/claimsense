@@ -1,0 +1,17 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/HLT/2025/000030
+Product             : Individual Health Policy
+Name of Insured     : ISHITA MENON
+Contact Number      : +91 55479 82973
+Address             : House No. 703, Malviya Nagar, Jaipur - 302017
+Date of Admission   : 12 Oct 2025
+Place of Loss       : Malviya Nagar, Jaipur
+Nature of Loss      : Acute appendicitis - laparoscopic appendectomy
+Amount Claimed      : Rs 93400.00
+Date of Intimation  : 15 Oct 2025
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

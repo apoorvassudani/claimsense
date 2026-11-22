@@ -1,6 +1,0 @@
-DOCUMENT TYPE: CLAIM_FORM
-SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
-Policy Number: POL-H-002
-Claimant Name: Meera Pillai
-Incident Date: 2026-02-05
-Total Amount: INR 45000.00

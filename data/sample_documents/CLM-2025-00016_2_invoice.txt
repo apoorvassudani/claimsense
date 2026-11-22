@@ -1,0 +1,19 @@
+MARIGOLD AUTO REPAIRS
+Gomti Nagar, Lucknow - 226010     GSTIN: 09AABFT1777K1Z3
+
+TAX INVOICE
+Invoice No: MAR/00008          Date: 16.08.2025
+Customer: I. Sharma     Vehicle: UP 32 ZW 8489     Model: Hyundai Creta
+Insurance Policy: NW/MTR/2025/000008
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Radiator                                   1        9,290.00
+2   Headlamp assembly (RH)                     1       10,440.00
+3   Front bumper assembly                      1       11,200.00
+4   Labour charges                             1        7,460.00
+----------------------------------------------------------------
+                                       Sub-total       38,390.00
+                                       GST @ 18%        6,910.20
+                                     GRAND TOTAL   Rs. 45,300.20
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

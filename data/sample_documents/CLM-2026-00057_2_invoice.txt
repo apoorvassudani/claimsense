@@ -1,0 +1,18 @@
+TEALBROOK AUTO REPAIRS
+Navrangpura, Ahmedabad - 380009     GSTIN: 24AABGT1814K1Z4
+
+TAX INVOICE
+Invoice No: TEA/00004          Date: 14.05.2026
+Customer: V. Agarwal     Vehicle: GJ 01 ZW 5799     Model: Mahindra XUV300
+Insurance Policy: NW/MTR/2026/000004
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Wiper assembly                             1        1,710.00
+2   Windshield glass                           1       15,440.00
+3   Labour charges                             1        5,500.00
+----------------------------------------------------------------
+                                       Sub-total       22,650.00
+                                       GST @ 18%        4,077.00
+                                     GRAND TOTAL      ₹26,727.00
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

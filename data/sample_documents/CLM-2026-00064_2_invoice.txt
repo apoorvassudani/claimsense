@@ -1,0 +1,19 @@
+AMBERGATE MOTOR WORKS
+Powai, Mumbai - 400076     GSTIN: 27AABFT1777K1Z3
+
+TAX INVOICE
+Invoice No: AMB/00024          Date: 04 Jun 2026
+Customer: ANJALI DESHPANDE     Vehicle: MH 03 ZY 6585     Model: Tata Punch
+Insurance Policy: NW/MTR/2026/000024
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   ORVM assembly (LH)                         1        4,950.00
+2   Front door panel (LH)                      1       13,380.00
+3   Fender (LH)                                1        6,440.00
+4   Labour charges                             1        6,270.00
+----------------------------------------------------------------
+                                       Sub-total       31,040.00
+                                       GST @ 18%        5,587.20
+                                     GRAND TOTAL      ₹36,627.20
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

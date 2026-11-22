@@ -1,15 +1,16 @@
 from datetime import date
 
-from app.services.rules import ClaimContext, evaluate, score
+from app.services.rules import ClaimContext, evaluate, names_match, score
 
 
 def ctx(**kw):
-    base = dict(claim_number="T1", claim_type="MOTOR", policy_number="POL-1", policy_start=date(2025, 1, 1),
-                policy_end=date(2025, 12, 31), sum_insured=100000, claimant_name="Test User",
-                incident_date=date(2025, 6, 1), reported_date=date(2025, 6, 3), claimed_amount=50000,
+    base = dict(claim_number="T1", claim_type="MOTOR", policy_number="NW/MTR/2025/000001",
+                policy_start=date(2025, 1, 1), policy_end=date(2025, 12, 31), sum_insured=100000,
+                claimant_name="Arjun Mehta", claimant_code="C001", incident_date=date(2025, 6, 1),
+                reported_date=date(2025, 6, 3), claimed_amount=50000,
                 doc_types={"CLAIM_FORM", "INVOICE", "POLICE_REPORT"},
-                extractions=[{"document_type": "INVOICE", "amount": "50000", "policy_number": "POL-1",
-                              "claimant_name": "Test User", "incident_date": "2025-06-01"}])
+                extractions=[{"document_type": "INVOICE", "amount": "50000", "policy_number": "NW/MTR/2025/000001",
+                              "claimant_name": "A. Mehta", "incident_date": "2025-06-01"}])
     base.update(kw)
     return ClaimContext(**base)
 
@@ -18,9 +19,20 @@ def codes(c):
     return {h.rule_code for h in evaluate(c)}
 
 
+def link(n, code, d):
+    return {"claim_number": n, "claimant_code": code, "incident_date": d}
+
+
 def test_clean_claim_has_no_findings():
     hits = evaluate(ctx())
     assert hits == [] and score(hits) == (0, "LOW")
+
+
+def test_name_matching_handles_initials_and_case():
+    assert names_match("A. Mehta", "Arjun Mehta")
+    assert names_match("ARJUN MEHTA", "Arjun Mehta")
+    assert not names_match("Meena Pillay", "Meera Pillai")
+    assert not names_match("Rohan Mehta", "Arjun Mehta")
 
 
 def test_policy_period_and_over_sum_insured():
@@ -28,14 +40,25 @@ def test_policy_period_and_over_sum_insured():
                                                                extractions=[]))
 
 
-def test_amount_and_name_mismatch():
-    c = ctx(extractions=[{"document_type": "INVOICE", "amount": "30000", "claimant_name": "Other Person"}])
-    assert {"AMOUNT_MISMATCH", "NAME_MISMATCH"} <= codes(c)
+def test_amount_tolerance():
+    assert "AMOUNT_MISMATCH" not in codes(ctx(claimed_amount=52500))   # 5% over: allowed
+    assert "AMOUNT_MISMATCH" in codes(ctx(claimed_amount=72500))       # 45% over: flagged
 
 
-def test_ring_needs_two_other_claims():
-    assert "SHARED_IDENTIFIER" not in codes(ctx(shared_ids={"PHONE:x": ["A"]}))
-    assert "SHARED_IDENTIFIER" in codes(ctx(shared_ids={"PHONE:x": ["A", "B"]}))
+def test_shared_phone_only_counts_other_claimants():
+    assert "SHARED_PHONE" not in codes(ctx(links={"PHONE:x": [link("T2", "C001", date(2025, 3, 1))]}))
+    assert "SHARED_PHONE" in codes(ctx(links={"PHONE:x": [link("T2", "C009", date(2025, 3, 1))]}))
+
+
+def test_shared_address_alone_is_not_flagged():
+    assert codes(ctx(links={"ADDRESS:x": [link("T2", "C009", date(2025, 3, 1))]})) == set()
+
+
+def test_provider_cluster_needs_two_claims_within_window():
+    busy_but_spread = [link("T2", "C2", date(2025, 2, 1)), link("T3", "C3", date(2025, 9, 1))]
+    clustered = [link("T2", "C2", date(2025, 5, 20)), link("T3", "C3", date(2025, 6, 15))]
+    assert "PROVIDER_CLUSTER" not in codes(ctx(links={"PROVIDER:g": busy_but_spread}))
+    assert "PROVIDER_CLUSTER" in codes(ctx(links={"PROVIDER:g": clustered}))
 
 
 def test_score_is_capped():

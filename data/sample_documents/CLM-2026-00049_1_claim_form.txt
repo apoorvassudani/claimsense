@@ -1,0 +1,18 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/MTR/2025/000084
+Product             : Private Car Package Policy
+Name of Insured     : IMRAN MENON
+Contact Number      : +91 55788 81833
+Address             : House No. 264, Dwarka Sector 12, New Delhi - 110078
+Date of Loss        : 09-03-2026
+Place of Loss       : Dwarka Sector 12, New Delhi
+Vehicle Reg. No.    : DL 9C ZW 7915
+Nature of Loss      : Front damage after hitting a road divider
+Amount Claimed      : INR 49,265.00
+Date of Intimation  : 23-04-2026
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

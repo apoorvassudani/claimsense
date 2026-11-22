@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/PRP/2025/000046
+
+Dear Sir/Madam,
+
+I, Nandini Rao, residing at House No. 109, Dwarka Sector 12, New Delhi - 110078, wish to intimate a claim under the above policy. On 10 May 2026, my home suffered damage: short-circuit fire in kitchen.
+I request reimbursement of ₹1,84,670.00 as per the attached documents.
+
+Yours faithfully,
+Nandini Rao
+Date: 14.05.2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

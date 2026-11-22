@@ -1,0 +1,18 @@
+CLAIM FORM - PROPERTY
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/PRP/2024/000043
+  Product .................. Home Shield Policy
+Section 2: Insured person
+  Full name ................ VIVAAN PATEL
+  Mobile ................... +91 55623 41494
+Section 3: Loss details
+  Incident on .............. 2025-05-21
+  Location ................. Rohini Sector 9, New Delhi
+  Description .............. Short-circuit fire in kitchen
+  Estimated loss ........... INR 1,32,750.00
+
+Signed by the insured on 2025-05-23
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

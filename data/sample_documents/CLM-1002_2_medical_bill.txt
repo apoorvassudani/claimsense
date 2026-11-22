@@ -1,9 +1,0 @@
-DOCUMENT TYPE: MEDICAL_BILL
-SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
-Policy Number: POL-H-001
-Claimant Name: Kavya Rao
-Incident Date: 2026-01-20
-Document Date: 2026-01-23
-Invoice Number: BILL-9001
-Provider: City Care Hospital
-Total Amount: INR 82000.00

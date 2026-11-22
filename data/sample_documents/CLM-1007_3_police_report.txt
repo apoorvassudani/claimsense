@@ -1,6 +1,0 @@
-DOCUMENT TYPE: POLICE_REPORT
-SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
-Policy Number: POL-M-005
-Claimant Name: Vikram Singh
-Incident Date: 2026-03-10
-Vehicle Registration: HR26AA1111

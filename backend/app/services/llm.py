@@ -1,9 +1,11 @@
-"""Hosted-model client (OpenAI-compatible: Groq or Gemini) plus an offline mock.
+"""Hosted-model client (OpenAI-compatible: Groq now, Azure OpenAI next) plus an offline mock.
 All provider errors are mapped to a small set of categories used in traces and metrics."""
+import hashlib
 import json
 import re
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
 import httpx
 
@@ -44,8 +46,33 @@ _LABELS = {
 }
 
 
+GROUND_TRUTH = Path(__file__).resolve().parents[3] / "data" / "ground_truth.json"
+_truth_cache: dict[str, dict] | None = None
+
+
+def _truth_fields(document_text: str) -> dict | None:
+    """Offline mode: return the answer-key fields for a known synthetic document (matched by text hash)."""
+    global _truth_cache
+    if _truth_cache is None:
+        _truth_cache = {}
+        if GROUND_TRUTH.exists():
+            data = json.loads(GROUND_TRUTH.read_text(encoding="utf-8"))
+            for c in data.get("claims", []):
+                for d in c.get("documents", []):
+                    _truth_cache[d["sha256"]] = d["fields"]
+    return _truth_cache.get(hashlib.sha256(document_text.encode("utf-8")).hexdigest())
+
+
+def reset_truth_cache() -> None:
+    global _truth_cache
+    _truth_cache = None
+
+
 def _mock_extract(document_text: str) -> str:
-    """Deterministic 'Label: value' parser that returns the same JSON shape as the real model."""
+    """Offline extractor: answer-key fields for seeded documents, else a simple 'Label: value' parser."""
+    known = _truth_fields(document_text)
+    if known is not None:
+        return json.dumps(known | {"confidence_notes": ["mock: answer-key fields"]})
     out: dict = {k: None for k in set(_LABELS.values())}
     out["confidence_notes"] = ["mock extractor: label-based parsing"]
     for line in document_text.splitlines():
@@ -65,6 +92,18 @@ def _mock_extract(document_text: str) -> str:
     return json.dumps(out)
 
 
+MAX_RETRIES = 3
+
+
+def _retry_wait(resp: httpx.Response, attempt: int) -> float:
+    """Seconds to wait before retrying a 429: use Retry-After if given, else back off 2s, 4s, 8s."""
+    try:
+        wait = float(resp.headers.get("retry-after", ""))
+    except ValueError:
+        wait = 2.0 * (2 ** attempt)
+    return min(max(wait, 1.0), 20.0)
+
+
 def complete_json(system_prompt: str, user_prompt: str, document_text: str) -> LLMResult:
     sim = settings.simulate_failure
     if sim == "timeout":
@@ -80,25 +119,31 @@ def complete_json(system_prompt: str, user_prompt: str, document_text: str) -> L
 
     if not settings.llm_api_key:
         raise LLMError("LLM_API_KEY not configured")
-    try:
-        resp = httpx.post(
-            f"{settings.llm_base_url.rstrip('/')}/chat/completions",
-            headers={"Authorization": f"Bearer {settings.llm_api_key}"},
-            json={
-                "model": settings.llm_model,
-                "temperature": 0,
-                "response_format": {"type": "json_object"},
-                "messages": [{"role": "system", "content": system_prompt},
-                             {"role": "user", "content": user_prompt}],
-            },
-            timeout=settings.llm_timeout_s,
-        )
-    except httpx.TimeoutException as exc:
-        raise LLMTimeout(str(exc)) from exc
-    except httpx.HTTPError as exc:
-        raise LLMError(type(exc).__name__) from exc
+
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            resp = httpx.post(
+                f"{settings.llm_base_url.rstrip('/')}/chat/completions",
+                headers={"Authorization": f"Bearer {settings.llm_api_key}"},
+                json={
+                    "model": settings.llm_model,
+                    "temperature": 0,
+                    "response_format": {"type": "json_object"},
+                    "messages": [{"role": "system", "content": system_prompt},
+                                 {"role": "user", "content": user_prompt}],
+                },
+                timeout=settings.llm_timeout_s,
+            )
+        except httpx.TimeoutException as exc:
+            raise LLMTimeout(str(exc)) from exc
+        except httpx.HTTPError as exc:
+            raise LLMError(type(exc).__name__) from exc
+        if resp.status_code != 429 or attempt == MAX_RETRIES:
+            break
+        time.sleep(_retry_wait(resp, attempt))  # rate limited: wait, then try again
+
     if resp.status_code == 429:
-        raise LLMQuota("rate limit / quota exceeded")
+        raise LLMQuota("rate limit / quota exceeded after retries")
     if resp.status_code >= 400:
         err = LLMError(f"http_{resp.status_code}")
         err.category = f"http_{resp.status_code}"

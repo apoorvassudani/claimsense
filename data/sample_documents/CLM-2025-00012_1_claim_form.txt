@@ -1,0 +1,17 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/HLT/2025/000029
+Product             : Individual Health Policy
+Name of Insured     : Imran Verma
+Contact Number      : +91 55825 58119
+Address             : House No. 644, Sector 62, Noida - 201309
+Date of Admission   : 2025-07-15
+Place of Loss       : Sector 62, Noida
+Nature of Loss      : Community-acquired pneumonia - IV antibiotics
+Amount Claimed      : Rs 40530.00
+Date of Intimation  : 2025-07-20
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

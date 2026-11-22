@@ -16,7 +16,10 @@ def norm(node_type: str, value: str) -> str:
         return re.sub(r"\D", "", v)[-10:]
     if node_type == "VEHICLE":
         return re.sub(r"[^a-z0-9]", "", v)
-    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", "", v))
+    v = re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", " ", v)).strip()
+    if node_type == "PROVIDER":  # "X Auto Care Pvt. Ltd." and "X AUTO CARE" are the same business
+        v = re.sub(r"( (pvt|private|ltd|limited|llp|co|inc))+$", "", v).strip()
+    return v
 
 
 def _node(db: Session, node_type: str, raw: str, label: str | None = None) -> GraphNode:
@@ -54,19 +57,19 @@ def build_claim_graph(db: Session, claim: Claim, extractions: list[Extraction]) 
     db.flush()
 
 
-def shared_identifiers(db: Session, claim: Claim) -> dict[str, list[str]]:
-    """identifier label -> other claim numbers linked to the same identifier."""
+def linked_claims(db: Session, claim: Claim) -> dict[str, list[str]]:
+    """"TYPE:label" -> other claim numbers linked to the same phone/address/provider/vehicle node."""
     c = db.scalar(select(GraphNode).where(GraphNode.node_type == "CLAIM", GraphNode.node_key == claim.claim_number))
     if not c:
         return {}
     out: dict[str, list[str]] = {}
     ids = db.execute(select(GraphNode).join(GraphEdge, GraphEdge.dst_node_id == GraphNode.node_id)
-                     .where(GraphEdge.src_node_id == c.node_id, GraphNode.node_type.in_(SHARED_TYPES))).scalars()
+                     .where(GraphEdge.src_node_id == c.node_id, GraphNode.node_type.in_(SHARED_TYPES))).scalars().all()
     for ident in ids:
         others = db.execute(select(GraphNode.node_key).join(GraphEdge, GraphEdge.src_node_id == GraphNode.node_id)
                             .where(GraphEdge.dst_node_id == ident.node_id, GraphNode.node_id != c.node_id)).scalars().all()
         if others:
-            out[f"{ident.node_type}:{ident.label}"] = sorted(others)
+            out[f"{ident.node_type}:{ident.label}"] = sorted(set(others))
     return out
 
 

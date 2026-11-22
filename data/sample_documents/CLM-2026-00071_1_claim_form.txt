@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000016
+
+Dear Sir/Madam,
+
+I, Meera Menon, residing at House No. 266, Madhapur, Hyderabad - 500081, wish to intimate a claim under the above policy. On 24 June 2026, my vehicle TG 07 ZY 3298 (Mahindra XUV300) was damaged: side collision while turning.
+I request reimbursement of INR 16,307.60 as per the attached documents.
+
+Yours faithfully,
+Meera Menon
+Date: 24-06-2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

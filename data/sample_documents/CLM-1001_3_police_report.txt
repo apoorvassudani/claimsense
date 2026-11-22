@@ -1,6 +1,0 @@
-DOCUMENT TYPE: POLICE_REPORT
-SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
-Policy Number: POL-M-001
-Claimant Name: Arjun Mehta
-Incident Date: 2026-02-10
-Vehicle Registration: UP14AB1234
