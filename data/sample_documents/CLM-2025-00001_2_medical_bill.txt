@@ -17,3 +17,5 @@ Laboratory and radiology                            4,290.00
 NET AMOUNT                                      Rs. 98,070/-
 
 SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
+
+

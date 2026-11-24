@@ -35,11 +35,13 @@ Problem: [docs/problem_statement.md](docs/problem_statement.md) · Architecture:
 
 ## Deployment
 
-Production runs as one Azure App Service (API under `/api`, React app at `/`) with Azure Database for PostgreSQL.
-Step-by-step guide: [deploy/DEPLOY.md](deploy/DEPLOY.md). Package: `python deploy/make_package.py`.
+The training sandbox allows Container Registry and virtual machines (not App Service or managed PostgreSQL), so
+ClaimSense is deployed as containers: the image is built and pushed to **Azure Container Registry** and runs on an
+**Azure Linux VM** with PostgreSQL in a second container: [deploy/VM-DEPLOY.md](deploy/VM-DEPLOY.md).
+On an unrestricted subscription, the App Service route applies: [deploy/DEPLOY.md](deploy/DEPLOY.md).
 Containers: `docker compose -f docker-compose.full.yml up --build` (app + PostgreSQL on http://localhost:8080).
-CI/CD: `.github/workflows/ci.yml` runs tests and the frontend build on every push and deploys to App Service from
-`main`. Load test: `python -m app.load_test --url https://YOUR-APP.azurewebsites.net/api`.
+CI/CD: `.github/workflows/ci.yml` runs tests and the frontend build on every push; from `main` it builds and pushes
+the image to the registry and rolls it out on the VM. Load test: `python -m app.load_test --url https://YOUR-APP.azurewebsites.net/api`.
 
 ## Repository layout
 ```

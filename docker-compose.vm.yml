@@ -1,0 +1,31 @@
+# ClaimSense on an Azure Linux VM: the app image from Azure Container Registry + PostgreSQL in a container.
+# On the VM, in ~/claimsense (next to a .env file with your settings):
+#   ACR=yourregistry docker compose -f docker-compose.vm.yml up -d
+#   docker compose -f docker-compose.vm.yml exec app python -m app.seed        (load data once)
+# Then open http://VM-PUBLIC-IP
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: claimsense
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-claimsense}
+      POSTGRES_DB: claimsense
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U claimsense"]
+      interval: 3s
+      retries: 30
+  app:
+    image: ${ACR:?set ACR to your registry name}.azurecr.io/claimsense:${TAG:-latest}
+    restart: unless-stopped
+    env_file: .env                     # your Azure keys etc. (stays on the VM, never in the image)
+    environment:
+      DATABASE_URL: postgresql+psycopg://claimsense:${DB_PASSWORD:-claimsense}@db:5432/claimsense
+      LOG_FILE: logs/claimsense.jsonl
+    ports: ["80:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  pgdata:
