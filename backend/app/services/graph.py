@@ -89,7 +89,8 @@ def neighborhood(db: Session, claim_number: str) -> dict:
                 edges.append(e2)
                 nodes.setdefault(e2.src_node_id, db.get(GraphNode, e2.src_node_id))
     return {
-        "nodes": [{"id": n.node_id, "type": n.node_type, "label": n.label if n.node_type in SHARED_TYPES else n.node_key}
+        "nodes": [{"id": n.node_id, "type": n.node_type,
+                   "label": n.label if n.node_type in SHARED_TYPES or n.node_type == "CLAIMANT" else n.node_key}
                   for n in nodes.values()],
         "edges": [{"source": e.src_node_id, "target": e.dst_node_id, "relation": e.relation} for e in edges],
     }

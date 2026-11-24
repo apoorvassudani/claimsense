@@ -1,0 +1,27 @@
+# Full stack in containers: PostgreSQL + ClaimSense (frontend and API on one port).
+#   docker compose -f docker-compose.full.yml up --build
+#   then load data once:  docker compose -f docker-compose.full.yml exec app python -m app.seed
+#   open http://localhost:8080
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: claimsense
+      POSTGRES_PASSWORD: claimsense
+      POSTGRES_DB: claimsense
+    volumes: [pgdata_full:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U claimsense"]
+      interval: 3s
+      retries: 20
+  app:
+    build: .
+    env_file: backend/.env          # your Azure keys etc. (never baked into the image)
+    environment:
+      DATABASE_URL: postgresql+psycopg://claimsense:claimsense@db:5432/claimsense
+    ports: ["8080:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  pgdata_full:

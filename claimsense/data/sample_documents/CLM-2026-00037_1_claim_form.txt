@@ -1,0 +1,18 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/MTR/2025/000014
+Product             : Private Car Package Policy
+Name of Insured     : NANDINI SHARMA
+Contact Number      : +91 55660 28989
+Address             : House No. 674, Sector 62, Noida - 201309
+Date of Loss        : 20.01.2026
+Place of Loss       : Sector 62, Noida
+Vehicle Reg. No.    : UP 16 ZY 7183
+Nature of Loss      : Front damage after hitting a road divider
+Amount Claimed      : INR 48,262.00
+Date of Intimation  : 25.01.2026
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

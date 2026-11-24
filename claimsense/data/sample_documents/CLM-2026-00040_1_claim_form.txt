@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/HLT/2025/000072
+
+Dear Sir/Madam,
+
+I, Pranav Chopra, residing at House No. 529, Gomti Nagar, Lucknow - 226010, wish to intimate a claim under the above policy. I was admitted to hospital on 14 February 2026 for community-acquired pneumonia - IV antibiotics.
+I request reimbursement of Rs. 49,670/- as per the attached documents.
+
+Yours faithfully,
+Pranav Chopra
+Date: 22/02/2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

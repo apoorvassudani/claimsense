@@ -1,0 +1,18 @@
+CLAIM FORM - HEALTH
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/HLT/2025/000057
+  Product .................. Individual Health Policy
+Section 2: Insured person
+  Full name ................ Swati Patel
+  Mobile ................... +91 55939 26708
+Section 3: Loss details
+  Admitted on .............. 04.05.2026
+  Location ................. Dwarka Sector 12, New Delhi
+  Description .............. Community-acquired pneumonia - IV antibiotics
+  Estimated loss ........... INR 41,270.00
+
+Signed by the insured on 09.05.2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

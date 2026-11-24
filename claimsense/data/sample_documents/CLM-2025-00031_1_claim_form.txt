@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000026
+
+Dear Sir/Madam,
+
+I, Mohit Shah, residing at House No. 889, Koramangala, Bengaluru - 560034, wish to intimate a claim under the above policy. On 26 November 2025, my vehicle KA 01 ZW 8237 (Tata Nexon) was damaged: hit by an unidentified vehicle while parked.
+I request reimbursement of INR 21,405.20 as per the attached documents.
+
+Yours faithfully,
+Mohit Shah
+Date: 30-11-2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

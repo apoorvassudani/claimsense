@@ -1,0 +1,17 @@
+CLEARBROOK NURSING HOME
+Gomti Nagar, Lucknow
+
+FINAL HOSPITAL BILL
+Bill No: CLB-00023     UHID: 394159
+Patient Name: PRANAV CHOPRA
+Date of Admission: 2026-02-14
+Date of Discharge: 2026-02-20
+Diagnosis: Community-acquired pneumonia - IV antibiotics
+------------------------------------------------------------
+Room charges (6 days @ 4500)                       27,000.00
+Medicines and consumables                          18,650.00
+Laboratory and radiology                            4,020.00
+------------------------------------------------------------
+NET AMOUNT                                       Rs 49670.00
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

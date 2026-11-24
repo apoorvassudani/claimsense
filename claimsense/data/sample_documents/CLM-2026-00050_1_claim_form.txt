@@ -1,0 +1,19 @@
+CLAIM FORM - MOTOR
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/MTR/2025/000064
+  Product .................. Private Car Package Policy
+Section 2: Insured person
+  Full name ................ Aarav Gupta
+  Mobile ................... +91 55172 18161
+Section 3: Loss details
+  Incident on .............. 12-03-2026
+  Location ................. DLF Phase 3, Gurugram
+  Description .............. Front damage after hitting a road divider
+  Vehicle .................. HR 26 ZV 7005 (Hyundai i20)
+  Estimated loss ........... Rs. 41,819.20
+
+Signed by the insured on 18-03-2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

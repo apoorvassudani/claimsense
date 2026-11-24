@@ -1,0 +1,19 @@
+CLAIM FORM - MOTOR
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/MTR/2025/000023
+  Product .................. Private Car Package Policy
+Section 2: Insured person
+  Full name ................ Pooja Tiwari
+  Mobile ................... +91 55498 78911
+Section 3: Loss details
+  Incident on .............. 06/06/2026
+  Location ................. Sector 15, Faridabad
+  Description .............. Hit by an unidentified vehicle while parked
+  Vehicle .................. HR 51 ZW 9036 (Tata Punch)
+  Estimated loss ........... Rs 41559.60
+
+Signed by the insured on 09/06/2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

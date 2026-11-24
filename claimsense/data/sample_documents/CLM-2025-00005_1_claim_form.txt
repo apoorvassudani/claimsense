@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000056
+
+Dear Sir/Madam,
+
+I, Vikram Rao, residing at House No. 22, DLF Phase 3, Gurugram - 122002, wish to intimate a claim under the above policy. On 20 May 2025, my vehicle HR 26 ZY 8612 (Hyundai i20) was damaged: front damage after hitting a road divider.
+I request reimbursement of Rs 46350.40 as per the attached documents.
+
+Yours faithfully,
+Vikram Rao
+Date: 28 May 2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

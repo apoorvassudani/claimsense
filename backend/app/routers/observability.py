@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from ..config import settings
 from ..db import get_db
-from ..models import AIRun, TraceEvent
+from ..models import AIRun, Review, TraceEvent
 from ..schemas import RunOut, TraceEventOut
 
 router = APIRouter(prefix="/observability", tags=["observability"])
@@ -21,8 +21,10 @@ def p95(values: list[int]) -> int | None:
 
 @router.get("/runs", response_model=list[RunOut])
 def list_runs(status: str | None = None, model: str | None = None, hours: int | None = None,
-              limit: int = 50, db: Session = Depends(get_db)):
+              claim_id: int | None = None, limit: int = 50, db: Session = Depends(get_db)):
     q = select(AIRun).order_by(AIRun.created_at.desc()).limit(min(limit, 500))
+    if claim_id:
+        q = q.where(AIRun.claim_id == claim_id)
     if status:
         q = q.where(AIRun.status == status)
     if model:
@@ -55,10 +57,14 @@ def metrics(db: Session = Depends(get_db)):
     if slow:
         alerts.append({"code": "SLOW_CALL", "message": f"{len(slow)} recent call(s) exceeded "
                                                        f"{settings.slow_call_ms} ms", "run_ids": slow})
+    reviews = db.scalars(select(Review)).all()
+    feedback = {"reviews": len(reviews), "helpful": sum(r.ai_helpful is True for r in reviews),
+                "not_helpful": sum(r.ai_helpful is False for r in reviews)}
     return {"total_runs": total, "success": total - failed, "failed": failed,
             "error_rate": round(failed / total, 3) if total else 0.0,
             "p95_latency_ms": p95(lat), "avg_latency_ms": round(sum(lat) / len(lat)) if lat else None,
-            "by_model": by_model, "errors_by_type": errors, "alerts": alerts}
+            "by_model": by_model, "errors_by_type": errors, "alerts": alerts, "feedback": feedback,
+            "slow_call_ms": settings.slow_call_ms}
 
 
 @router.get("/runs/{run_id}")

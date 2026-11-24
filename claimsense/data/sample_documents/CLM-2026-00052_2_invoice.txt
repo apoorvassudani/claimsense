@@ -1,0 +1,18 @@
+MARIGOLD AUTO REPAIRS
+Gomti Nagar, Lucknow - 226010     GSTIN: 09AABFT1777K1Z3
+
+TAX INVOICE
+Invoice No: MAR/00042          Date: 20 April 2026
+Customer: N. Mehta     Vehicle: UP 32 ZV 6235     Model: Kia Seltos
+Insurance Policy: NW/MTR/2025/000078
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Radiator                                   1       13,280.00
+2   Headlamp assembly (RH)                     1        7,530.00
+3   Labour charges                             1        5,080.00
+----------------------------------------------------------------
+                                       Sub-total       25,890.00
+                                       GST @ 18%        4,660.20
+                                     GRAND TOTAL      ₹30,550.20
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

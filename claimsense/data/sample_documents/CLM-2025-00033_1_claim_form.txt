@@ -1,0 +1,18 @@
+CLAIM FORM - HEALTH
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/HLT/2025/000040
+  Product .................. Individual Health Policy
+Section 2: Insured person
+  Full name ................ Diya Mehta
+  Mobile ................... +91 55822 17229
+Section 3: Loss details
+  Admitted on .............. 10-12-2025
+  Location ................. Lajpat Nagar, New Delhi
+  Description .............. Fracture of right radius - open reduction and internal fixation
+  Estimated loss ........... Rs 132890.00
+
+Signed by the insured on 18-12-2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

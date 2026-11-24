@@ -1,0 +1,18 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/MTR/2026/000079
+Product             : Private Car Package Policy
+Name of Insured     : DEEPAK CHOPRA
+Contact Number      : +91 55473 28764
+Address             : House No. 892, Whitefield, Bengaluru - 560066
+Date of Loss        : 05 September 2026
+Place of Loss       : Whitefield, Bengaluru
+Vehicle Reg. No.    : KA 53 ZY 2868
+Nature of Loss      : Rear-ended at a traffic signal
+Amount Claimed      : Rs. 59,640/-
+Date of Intimation  : 12 September 2026
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000007
+
+Dear Sir/Madam,
+
+I, Manish Menon, residing at House No. 866, Whitefield, Bengaluru - 560066, wish to intimate a claim under the above policy. On 22 February 2026, my vehicle KA 53 ZY 1355 (Hyundai Creta) was damaged: front damage after hitting a road divider.
+I request reimbursement of INR 43,860.60 as per the attached documents.
+
+Yours faithfully,
+Manish Menon
+Date: 28 Feb 2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

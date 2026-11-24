@@ -1,0 +1,19 @@
+CLAIM FORM - MOTOR
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/MTR/2025/000010
+  Product .................. Private Car Package Policy
+Section 2: Insured person
+  Full name ................ LAKSHMI REDDY
+  Mobile ................... +91 55476 45865
+Section 3: Loss details
+  Incident on .............. 10 Nov 2025
+  Location ................. DLF Phase 3, Gurugram
+  Description .............. Hit by an unidentified vehicle while parked
+  Vehicle .................. HR 26 ZV 9349 (Hyundai Creta)
+  Estimated loss ........... INR 35,164.00
+
+Signed by the insured on 17 Nov 2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000078
+
+Dear Sir/Madam,
+
+I, Nandini Mehta, residing at House No. 157, Gomti Nagar, Lucknow - 226010, wish to intimate a claim under the above policy. On 14 April 2026, my vehicle UP 32 ZV 6235 (Kia Seltos) was damaged: front damage after hitting a road divider.
+I request reimbursement of Rs. 30,550.20 as per the attached documents.
+
+Yours faithfully,
+Nandini Mehta
+Date: 19/04/2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

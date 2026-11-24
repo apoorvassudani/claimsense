@@ -1,18 +1,24 @@
 from contextlib import asynccontextmanager
 from time import perf_counter
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
-from .db import Base, engine
+from .db import Base, SessionLocal, engine
 from .observability import log_event, tracer
-from .routers import claims, graph, observability
+from .routers import auth, claims, graph, observability, policy
+from .services import ocr
+from .services.auth import current_user, ensure_demo_users, require_role
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(engine)  # MVP; switch to Alembic migrations later
+    with SessionLocal() as db:
+        ensure_demo_users(db)
+    if not settings.auth_secret:
+        log_event("auth_secret_missing", warning="AUTH_SECRET not set: sign-ins end whenever the server restarts.")
     log_event("startup", model=settings.model_label)
     yield
 
@@ -38,9 +44,15 @@ async def trace_requests(request: Request, call_next):
 
 @app.get("/health", tags=["health"])
 def health():
-    return {"status": "ok", "model": settings.model_label}
+    return {"status": "ok", "model": settings.model_label,
+            "retrieval": "azure_ai_search_hybrid" if settings.search_enabled else "local_keyword",
+            "ocr": ocr.engine_label()}
 
 
-app.include_router(claims.router)
-app.include_router(observability.router)
-app.include_router(graph.router)
+# Every API route needs a signed-in user; the fraud graph and monitoring are for reviewers and admins.
+# /health and /auth/login stay public.
+app.include_router(auth.router)
+app.include_router(claims.router, dependencies=[Depends(current_user)])
+app.include_router(policy.router, dependencies=[Depends(current_user)])
+app.include_router(graph.router, dependencies=[Depends(require_role("REVIEWER"))])
+app.include_router(observability.router, dependencies=[Depends(require_role("REVIEWER"))])

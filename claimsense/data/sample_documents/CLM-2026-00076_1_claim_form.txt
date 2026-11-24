@@ -1,0 +1,18 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/MTR/2026/000080
+Product             : Private Car Package Policy
+Name of Insured     : Aarav Singh
+Contact Number      : +91 55149 80485
+Address             : House No. 404, Kothrud, Pune - 411038
+Date of Loss        : 2026-07-02
+Place of Loss       : Kothrud, Pune
+Vehicle Reg. No.    : MH 12 ZY 1183
+Nature of Loss      : Windshield and bonnet damaged by a falling branch
+Amount Claimed      : INR 31,541.40
+Date of Intimation  : 2026-07-05
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

@@ -18,6 +18,7 @@ from .datagen import SEED, generate
 from .db import Base, SessionLocal, engine
 from .models import Claim, Claimant, Document, Policy
 from .services import llm
+from .services.auth import ensure_demo_users
 from .services.pipeline import process_claim
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
@@ -131,6 +132,7 @@ def load_database(data: dict):
                             sha256=d["sha256"], text_content=d["text"]))
         claims.append(claim)
     db.commit()
+    ensure_demo_users(db)  # drop_all removed the accounts too
     return db, claims
 
 
@@ -169,11 +171,13 @@ def main(argv: list[str]):
     settings.simulate_failure = ""
     for i, c in enumerate(claims, 1):
         provider_for(c)
-        process_claim(db, c)
+        process_claim(db, c, summarize=False)
         if c.claim_number in live_set:
             print(f"  live {i}/{len(claims)} {c.claim_number}")
-    settings.llm_provider = "mock"
-    for c in claims:  # second rules pass so duplicates/rings see every claim
+    # Second rules pass so duplicates/rings see every claim. Documents are already read, so the only AI call
+    # left is the reviewer briefing (RAG), written once per flagged claim with its final findings.
+    for c in claims:
+        provider_for(c)
         process_claim(db, c)
     settings.llm_provider = configured
 

@@ -15,16 +15,33 @@ from ..models import AIRun, Claim, Document, Extraction, TraceEvent
 from ..observability import StageRecorder, log_event
 from . import llm
 
-PROMPT_VERSION = "extract-v1"
+PROMPT_VERSION = "extract-v3"
 MAX_CHARS = 6000
 
+# v2: defines what each date means per document type. v1 left this open, so the model returned null for
+# hospital admission/discharge dates and claim-form intimation dates (see docs/evaluation-report.md).
+# v3: provider_name is the billing business only, name without address. v2 returned police stations as
+# providers on police reports, which would also have linked unrelated claims in the fraud graph.
 SYSTEM_PROMPT = """You extract fields from synthetic insurance claim documents.
 Return ONLY a JSON object with exactly these keys:
 document_type (one of CLAIM_FORM, INVOICE, POLICE_REPORT, MEDICAL_BILL, OTHER),
 policy_number, claimant_name, incident_date (YYYY-MM-DD), document_date (YYYY-MM-DD),
 amount (number, total amount on the document), invoice_number, provider_name,
 vehicle_registration, phone, confidence_notes (list of short strings).
-Use null for anything not clearly present. Never guess, infer or calculate values.
+
+Field meanings:
+- incident_date: the day the loss happened. Accident, theft or damage date for motor and property;
+  for health, the date of admission (or "admitted on" date).
+- document_date: the day the document itself was issued or filed. Bill or invoice date; on a hospital
+  bill or discharge summary, the date of discharge; on a claim form, the date of intimation; on a police
+  entry, the date it is "dated". If the only date shown is when the accident happened, use null.
+- claimant_name: the insured person, patient or complainant, exactly as written.
+- invoice_number: the bill, invoice or receipt number.
+- provider_name: the business name of the hospital, garage or contractor that is charging for treatment or
+  repairs, without its address or city. Police stations and the insurance company are never providers, so
+  provider_name is null on police reports and claim forms.
+
+Use null for anything not clearly present. Copy values as written; never guess or calculate them.
 Do not judge whether the claim is fraudulent."""
 
 

@@ -59,11 +59,12 @@ def test_ai_timeout_is_isolated(client):
     settings.simulate_failure = ""
     assert body["runs"][0]["status"] == "FAILED" and body["runs"][0]["error_type"] == "timeout"
     assert client.get(f"/claims/{cid}").json()["claimed_amount"] == "40000.00"   # claim data intact
+    assert body["findings"]                                   # rules still ran on what was available
     m = client.get("/observability/metrics").json()
-    assert m["failed"] == 1 and m["error_rate"] == 1.0
-    # retry succeeds and does not re-extract twice
+    assert m["failed"] == 2 and m["error_rate"] == 1.0        # extraction + reviewer briefing both timed out
+    # retry succeeds: one extraction, one briefing; a third run has nothing left to do
     body2 = client.post(f"/claims/{cid}/process").json()
-    assert [r["status"] for r in body2["runs"]] == ["SUCCESS"]
+    assert [(r["task"], r["status"]) for r in body2["runs"]] == [("EXTRACTION", "SUCCESS"), ("SUMMARY", "SUCCESS")]
     assert client.post(f"/claims/{cid}/process").json()["runs"] == []
 
 
@@ -75,3 +76,31 @@ def test_duplicate_document_across_claims(client):
     assert {"DUPLICATE_DOCUMENT", "DUPLICATE_INVOICE"} <= codes
     g = client.get(f"/graph/claims/{b}").json()
     assert any(n["type"] == "PROVIDER" for n in g["nodes"])
+
+
+def test_review_sets_status_and_links_run(client):
+    cid = make_claim(client)
+    upload(client, cid)
+    assert client.post(f"/claims/{cid}/reviews", json={"decision": "CLEAR"}).status_code == 422  # not verified yet
+    client.post(f"/claims/{cid}/process")
+    r = client.post(f"/claims/{cid}/reviews", json={"decision": "ESCALATE", "ai_helpful": False,
+                                                     "comment": "Garage looks suspicious"})
+    assert r.status_code == 201 and r.json()["run_id"]
+    assert client.get(f"/claims/{cid}").json()["status"] == "ESCALATED"
+    assert client.get(f"/claims/{cid}/reviews").json()[0]["comment"] == "Garage looks suspicious"
+    fb = client.get("/observability/metrics").json()["feedback"]
+    assert fb == {"reviews": 1, "helpful": 0, "not_helpful": 1}
+    assert client.post(f"/claims/{cid}/reviews", json={"decision": "APPROVE"}).status_code == 422
+
+
+def test_lists_for_frontend(client):
+    cid = make_claim(client)
+    upload(client, cid)
+    client.post(f"/claims/{cid}/process")
+    assert {c["claimant_code"] for c in client.get("/claimants").json()} == {"C001", "C002"}
+    row = client.get("/claims").json()[0]
+    assert row["claimant_name"] == "Arjun Mehta"
+    runs = client.get(f"/observability/runs?claim_id={cid}").json()
+    assert runs and all(r["claim_id"] == cid for r in runs)
+    doc_id = client.get(f"/claims/{cid}").json()["documents"][0]["document_id"]
+    assert "Policy Number" in client.get(f"/documents/{doc_id}").json()["text"]

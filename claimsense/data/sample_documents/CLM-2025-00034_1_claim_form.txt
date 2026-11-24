@@ -1,0 +1,17 @@
+Northwind General Insurance Co. Ltd. (fictional)
+CLAIM INTIMATION FORM
+
+Policy No.          : NW/PRP/2025/000059
+Product             : Home Shield Policy
+Name of Insured     : NANDINI KHAN
+Contact Number      : +91 55248 90971
+Address             : House No. 544, Navrangpura, Ahmedabad - 380009
+Date of Loss        : 2025-12-24
+Place of Loss       : Navrangpura, Ahmedabad
+Nature of Loss      : Short-circuit fire in kitchen
+Amount Claimed      : Rs 309042.00
+Date of Intimation  : 2025-12-29
+
+Declaration: I declare that the information given above is true to the best of my knowledge.
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

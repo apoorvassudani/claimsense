@@ -1,4 +1,5 @@
 """Deterministic validation & fraud-flag rules. Scores come from these rules, never from the LLM."""
+import difflib
 import re
 from dataclasses import dataclass, field
 from datetime import date
@@ -9,14 +10,19 @@ SEVERITY = {
     "DUPLICATE_DOCUMENT": "HIGH", "DUPLICATE_INVOICE": "HIGH", "SHARED_VEHICLE": "HIGH",
     "EARLY_CLAIM": "MEDIUM", "AMOUNT_MISMATCH": "MEDIUM", "NAME_MISMATCH": "MEDIUM", "DATE_MISMATCH": "MEDIUM",
     "SHARED_PHONE": "MEDIUM", "PROVIDER_CLUSTER": "MEDIUM",
-    "LATE_REPORTING": "LOW", "MISSING_DOCUMENT": "LOW",
+    "LATE_REPORTING": "LOW", "MISSING_DOCUMENT": "LOW", "SCAN_UNCLEAR": "LOW",
 }
+# Advisory: shown to the reviewer, but on its own never sends a claim to review (LOW = 5 points).
+ADVISORY = {"SCAN_UNCLEAR"}
+NEAR_MATCH = 0.8  # similarity above which a scanned value is "one or two characters off"
 REQUIRED_DOCS = {"MOTOR": {"CLAIM_FORM", "INVOICE", "POLICE_REPORT"},
                  "HEALTH": {"CLAIM_FORM", "MEDICAL_BILL"},
                  "PROPERTY": {"CLAIM_FORM", "INVOICE"}}
 AMOUNT_TOLERANCE = 0.10
 CLUSTER_WINDOW_DAYS = 30
 _TITLES = {"mr", "mrs", "ms", "dr", "shri", "smt", "kumari", "km"}
+DOC_NAMES = {"CLAIM_FORM": "The claim form", "INVOICE": "The invoice", "POLICE_REPORT": "The police report",
+             "MEDICAL_BILL": "The hospital bill", "OTHER": "A document"}
 
 
 @dataclass
@@ -38,6 +44,9 @@ class ClaimContext:
     duplicate_invoices: list[str] = field(default_factory=list)  # other claims with same invoice+provider
     # "TYPE:label" -> [{"claim_number", "claimant_code", "incident_date"}] for other claims sharing that identifier
     links: dict[str, list[dict]] = field(default_factory=dict)
+    # Registers used to tell a scan misread from a genuine mismatch (see _scan_misread_*).
+    known_policies: set[str] = field(default_factory=set)   # normalised policy numbers on record
+    known_people: list[str] = field(default_factory=list)   # claimant names on record
 
 
 @dataclass
@@ -67,6 +76,35 @@ def names_match(a: str | None, b: str | None) -> bool:
 
 def _code(s: str | None) -> str:
     return re.sub(r"[^a-z0-9]", "", (s or "").lower())
+
+
+def _similar(a: str, b: str) -> float:
+    return difflib.SequenceMatcher(None, a, b).ratio()
+
+
+def _scan_misread_policy(e: dict, ctx: ClaimContext) -> bool:
+    """A scanned policy number that is close to the claim's own but matches no policy on record is far more
+    likely an OCR misread than fraud. One that matches another real policy stays a full mismatch.
+    The other identity on the same document must agree too: if its name belongs to someone else, the document
+    probably isn't this claimant's at all, so the policy mismatch keeps full strength (found in a manual test
+    where OCR misread a policy number on a document that genuinely belonged to another person)."""
+    read = _code(e.get("policy_number"))
+    name = e.get("claimant_name")
+    name_agrees = not name or names_match(name, ctx.claimant_name) or _scan_misread_name(e, ctx)
+    return bool(e.get("_scanned") and ctx.known_policies and read not in ctx.known_policies
+                and _similar(read, _code(ctx.policy_number)) >= NEAR_MATCH and name_agrees)
+
+
+def _scan_misread_name(e: dict, ctx: ClaimContext) -> bool:
+    """Same surname, garbled first name, and not a person on record: likely a misread. A different surname,
+    or a name that matches another real claimant, stays a full mismatch."""
+    if not e.get("_scanned"):
+        return False
+    read, claim = _name_tokens(e.get("claimant_name")), _name_tokens(ctx.claimant_name)
+    if not read or not claim or _similar(read[-1], claim[-1]) < NEAR_MATCH:
+        return False
+    others = [p for p in ctx.known_people if not names_match(p, ctx.claimant_name)]
+    return not any(names_match(e["claimant_name"], p) for p in others)
 
 
 def evaluate(ctx: ClaimContext) -> list[RuleHit]:
@@ -100,17 +138,30 @@ def evaluate(ctx: ClaimContext) -> list[RuleHit]:
 
     seen = set()
     for e in ctx.extractions:
-        dt = e.get("document_type")
-        if e.get("policy_number") and _code(e["policy_number"]) != _code(ctx.policy_number) \
-                and "POLICY_NUMBER_MISMATCH" not in seen:
-            seen.add("POLICY_NUMBER_MISMATCH")
-            add("POLICY_NUMBER_MISMATCH", f"{dt} shows a different policy number.",
-                {"document": e["policy_number"], "claim": ctx.policy_number})
-        if e.get("claimant_name") and not names_match(e["claimant_name"], ctx.claimant_name) \
-                and "NAME_MISMATCH" not in seen:
-            seen.add("NAME_MISMATCH")
-            add("NAME_MISMATCH", f"{dt} shows a different person's name.",
-                {"document": e["claimant_name"], "claim": ctx.claimant_name})
+        dt = DOC_NAMES.get(e.get("document_type"), "A document")
+        if e.get("policy_number") and _code(e["policy_number"]) != _code(ctx.policy_number):
+            if _scan_misread_policy(e, ctx):
+                if "SCAN_UNCLEAR:policy" not in seen:
+                    seen.add("SCAN_UNCLEAR:policy")
+                    add("SCAN_UNCLEAR", f"{dt} (scanned) seems to show policy number {e['policy_number']}, which "
+                        "matches no policy on record and is one or two characters off. Probably a scan misread: "
+                        "check the original.", {"field": "policy number", "document": e["policy_number"],
+                                                "claim": ctx.policy_number})
+            elif "POLICY_NUMBER_MISMATCH" not in seen:
+                seen.add("POLICY_NUMBER_MISMATCH")
+                add("POLICY_NUMBER_MISMATCH", f"{dt} shows a different policy number.",
+                    {"document": e["policy_number"], "claim": ctx.policy_number})
+        if e.get("claimant_name") and not names_match(e["claimant_name"], ctx.claimant_name):
+            if _scan_misread_name(e, ctx):
+                if "SCAN_UNCLEAR:name" not in seen:
+                    seen.add("SCAN_UNCLEAR:name")
+                    add("SCAN_UNCLEAR", f"{dt} (scanned) seems to show the name {e['claimant_name']}: same surname, "
+                        "but the first name doesn't match anyone on record. Probably a scan misread: check the "
+                        "original.", {"field": "name", "document": e["claimant_name"], "claim": ctx.claimant_name})
+            elif "NAME_MISMATCH" not in seen:
+                seen.add("NAME_MISMATCH")
+                add("NAME_MISMATCH", f"{dt} shows a different person's name.",
+                    {"document": e["claimant_name"], "claim": ctx.claimant_name})
         if e.get("incident_date") and str(e["incident_date"]) != str(ctx.incident_date) \
                 and "DATE_MISMATCH" not in seen:
             seen.add("DATE_MISMATCH")

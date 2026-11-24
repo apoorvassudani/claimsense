@@ -1,0 +1,19 @@
+CLEARBROOK NURSING HOME
+Gomti Nagar, Lucknow
+
+FINAL HOSPITAL BILL
+Bill No: CLB-00022     UHID: 598327
+Patient Name: FARAH SHAH
+Date of Admission: 04 February 2026
+Date of Discharge: 05 February 2026
+Diagnosis: Cataract (left eye) - phacoemulsification with IOL
+------------------------------------------------------------
+Room charges (1 day @ 3500)                         3,500.00
+Procedure / surgeon fees                           42,000.00
+Operation theatre charges                          10,300.00
+Medicines and consumables                           2,680.00
+Laboratory and radiology                            4,020.00
+------------------------------------------------------------
+NET AMOUNT                                        ₹62,500.00
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

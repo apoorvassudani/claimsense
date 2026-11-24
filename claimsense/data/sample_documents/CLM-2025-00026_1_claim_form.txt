@@ -1,0 +1,18 @@
+CLAIM FORM - HEALTH
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/HLT/2025/000036
+  Product .................. Individual Health Policy
+Section 2: Insured person
+  Full name ................ Nandini Verma
+  Mobile ................... +91 55740 95346
+Section 3: Loss details
+  Admitted on .............. 24 Oct 2025
+  Location ................. Powai, Mumbai
+  Description .............. Gallstones - laparoscopic cholecystectomy
+  Estimated loss ........... ₹1,30,380.00
+
+Signed by the insured on 27 Oct 2025
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

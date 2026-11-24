@@ -41,6 +41,7 @@ class DocumentOut(ORM):
     doc_type: str
     filename: str
     sha256: str
+    ocr_engine: str | None = None
     uploaded_at: datetime
 
 
@@ -51,9 +52,16 @@ class FindingOut(ORM):
     evidence: dict
 
 
+class ClaimantOut(ORM):
+    claimant_code: str
+    full_name: str
+
+
 class ClaimOut(ORM):
     claim_id: int
     claim_number: str
+    claimant_code: str
+    claimant_name: str
     claim_type: str
     incident_date: date
     reported_date: date
@@ -61,12 +69,12 @@ class ClaimOut(ORM):
     status: str
     risk_score: int | None
     risk_level: str | None
+    rule_codes: list[str] = []
     policy: PolicyOut
 
 
 class ClaimDetail(ClaimOut):
     description: str
-    claimant_name: str
     documents: list[DocumentOut]
     findings: list[FindingOut]
 
@@ -94,3 +102,20 @@ class TraceEventOut(ORM):
     duration_ms: int
     status: str
     error_category: str | None
+
+
+class ReviewCreate(BaseModel):
+    decision: Literal["CLEAR", "ESCALATE", "REQUEST_INFO"]
+    ai_helpful: bool | None = None
+    comment: str = Field(default="", max_length=2000)
+
+
+class ReviewOut(ORM):
+    review_id: int
+    claim_id: int
+    run_id: str | None
+    reviewer_code: str
+    decision: str
+    ai_helpful: bool | None
+    comment: str
+    reviewed_at: datetime

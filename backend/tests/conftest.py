@@ -3,6 +3,8 @@ import os
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 os.environ["LLM_PROVIDER"] = "mock"
 os.environ["LOG_FILE"] = "/tmp/claimsense-test.jsonl"
+os.environ["DEMO_PASSWORD"] = "test-pass-123"
+os.environ["AUTH_SECRET"] = "test-secret-for-signing-tokens-only"
 
 from datetime import date
 from decimal import Decimal
@@ -33,6 +35,10 @@ def client():
     db.commit()
     db.close()
     settings.simulate_failure = ""
-    with TestClient(app) as c:
+    from app.services.auth import reset_lockouts
+    reset_lockouts()
+    with TestClient(app) as c:  # startup creates the demo accounts
+        token = c.post("/auth/login", json={"username": "admin01", "password": "test-pass-123"}).json()["access_token"]
+        c.headers["Authorization"] = f"Bearer {token}"   # existing tests run as an admin
         yield c
     settings.simulate_failure = ""

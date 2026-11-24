@@ -396,6 +396,7 @@ class Generator:
         hh, mm = r.randint(7, 22), r.choice([5, 15, 20, 30, 40, 50])
         f = {"claimant_name": name, "incident_date": d, "vehicle_registration": c["vehicle"]}
         if variant == 0:
+            f["document_date"] = d  # the G.D. entry is explicitly "dated" on the incident day
             lines = [f"GENERAL DIARY ENTRY - LOCAL POLICE STATION, {loc[0].upper()}",
                      f"G.D. No. {r.randint(100, 999)}B dated {fmt_date(d, 5)}", "",
                      f"On {fmt_date(d, 5)} at about {hh:02d}:{mm:02d} hrs, the complainant {name}, r/o "

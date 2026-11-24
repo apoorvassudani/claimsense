@@ -76,6 +76,18 @@ class Claim(Base):
     documents: Mapped[list["Document"]] = relationship(back_populates="claim", order_by="Document.document_id")
     findings: Mapped[list["Finding"]] = relationship(back_populates="claim", cascade="all, delete-orphan")
 
+    @property
+    def claimant_name(self) -> str:
+        return self.claimant.full_name
+
+    @property
+    def claimant_code(self) -> str:
+        return self.claimant.claimant_code
+
+    @property
+    def rule_codes(self) -> list[str]:
+        return sorted({f.rule_code for f in self.findings})
+
 
 class Document(Base):
     __tablename__ = "documents"
@@ -89,6 +101,7 @@ class Document(Base):
     filename: Mapped[str] = mapped_column(String(200))
     sha256: Mapped[str] = mapped_column(String(64), index=True)
     text_content: Mapped[str] = mapped_column(Text)
+    ocr_engine: Mapped[str | None] = mapped_column(String(80), nullable=True)  # set when read from a scan
     uploaded_at: Mapped[datetime] = mapped_column(TS, default=utcnow)
 
     claim: Mapped[Claim] = relationship(back_populates="documents")
@@ -101,7 +114,7 @@ class AIRun(Base):
     run_id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
     claim_id: Mapped[int] = mapped_column(ForeignKey("claims.claim_id"))
     document_id: Mapped[int | None] = mapped_column(ForeignKey("documents.document_id"), nullable=True)
-    task: Mapped[str] = mapped_column(String(20))  # EXTRACTION (Day 32), SUMMARY (later)
+    task: Mapped[str] = mapped_column(String(20))  # OCR, EXTRACTION or SUMMARY
     trace_id: Mapped[str] = mapped_column(String(32), index=True)
     model_id: Mapped[str] = mapped_column(String(80))
     prompt_version: Mapped[str] = mapped_column(String(20))
@@ -137,6 +150,33 @@ class Finding(Base):
     created_at: Mapped[datetime] = mapped_column(TS, default=utcnow)
 
     claim: Mapped[Claim] = relationship(back_populates="findings")
+
+
+class User(Base):
+    """A ClaimSense staff account. Passwords are stored only as salted PBKDF2 hashes."""
+    __tablename__ = "users"
+    __table_args__ = (CheckConstraint("role IN ('INTAKE','REVIEWER','ADMIN')", name="ck_user_role"),)
+    user_id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(20), unique=True, index=True)
+    full_name: Mapped[str] = mapped_column(String(100))
+    role: Mapped[str] = mapped_column(String(10))
+    password_hash: Mapped[str] = mapped_column(String(200))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(TS, default=utcnow)
+
+
+class ReviewerSummary(Base):
+    """AI-written briefing for the reviewer (RAG): rule findings + retrieved policy clauses -> grounded text."""
+    __tablename__ = "reviewer_summaries"
+    summary_id: Mapped[int] = mapped_column(primary_key=True)
+    claim_id: Mapped[int] = mapped_column(ForeignKey("claims.claim_id"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("ai_runs.run_id"))
+    findings_signature: Mapped[str] = mapped_column(String(64))
+    summary: Mapped[str] = mapped_column(Text)
+    next_steps: Mapped[list] = mapped_column(JSON, default=list)
+    citations: Mapped[list] = mapped_column(JSON, default=list)
+    clauses: Mapped[list] = mapped_column(JSON, default=list)  # what retrieval gave the model, per rule
+    created_at: Mapped[datetime] = mapped_column(TS, default=utcnow)
 
 
 class TraceEvent(Base):

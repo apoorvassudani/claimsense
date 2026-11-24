@@ -16,7 +16,9 @@ from pathlib import Path
 from sqlalchemy import select
 
 from .db import SessionLocal
-from .models import AIRun, Claim, Document, Extraction
+from .models import AIRun, Claim, Document, Extraction, ReviewerSummary
+from .services.policy_rag import expected_clauses
+from .services.rules import ADVISORY
 
 ROOT = Path(__file__).resolve().parents[2]
 TRUTH_FILE = ROOT / "data" / "ground_truth.json"
@@ -50,11 +52,57 @@ def pct(a: int, b: int) -> str:
     return f"{100 * a / b:.1f}%" if b else "n/a"
 
 
-def main(argv: list[str]):
+def briefing_section(db, claims: dict, include_mock: bool) -> list[str]:
+    """Generation half of RAG: are reviewer briefings produced, grounded, and do they cite the right clauses?"""
+    flagged = [c for c in claims.values() if c.findings]
+    attempts = db.scalars(select(AIRun).where(AIRun.task == "SUMMARY")).all()
+    if not include_mock:
+        attempts = [r for r in attempts if not r.model_id.startswith("mock")]
+    out = ["## Reviewer briefings (RAG generation)", ""]
+    if not attempts:
+        return out + ["No briefings were written by a live model yet. Run `python -m app.seed --live` and evaluate again.", ""]
+    ok = [r for r in attempts if r.status == "SUCCESS"]
+    errors = defaultdict(int)
+    for r in attempts:
+        if r.status == "FAILED":
+            errors[r.error_type] += 1
+    covered = expected_hit = n_findings = with_brief = 0
+    for c in flagged:
+        s = db.scalar(select(ReviewerSummary).where(ReviewerSummary.claim_id == c.claim_id)
+                      .order_by(ReviewerSummary.summary_id.desc()).limit(1))
+        if not s:
+            continue
+        run = db.get(AIRun, s.run_id)
+        if run.model_id.startswith("mock") and not include_mock:
+            continue
+        with_brief += 1
+        retrieved = {x["rule_code"]: set(x["clause_ids"]) for x in s.clauses}
+        cited = set(s.citations)
+        for f in c.findings:
+            n_findings += 1
+            covered += bool(retrieved.get(f.rule_code, set()) & cited)
+            expected_hit += bool(expected_clauses(f.rule_code, c.claim_type) & cited)
+    lat = sorted(r.latency_ms for r in ok if r.latency_ms is not None)
+    p50 = lat[len(lat) // 2] if lat else None
+    return out + [
+        f"Flagged claims: **{len(flagged)}**; with a briefing: **{with_brief}**. "
+        f"Attempts: **{len(attempts)}**, succeeded: **{len(ok)}** ({pct(len(ok), len(attempts))}).",
+        f"- Grounding: every succeeded briefing passed the citation check (only clauses that retrieval returned). "
+        f"Rejected for ungrounded citations: **{errors.get('ungrounded_citation', 0)}**.",
+        f"- Coverage: findings supported by a cited clause: **{pct(covered, n_findings)}** ({covered}/{n_findings}).",
+        f"- Correct clause cited (vs. retrieval answer key): **{pct(expected_hit, n_findings)}**.",
+        f"- Median briefing latency: **{p50} ms**." if p50 is not None else "- Median briefing latency: n/a.",
+        *([f"- Other failures: " + ", ".join(f"{k}: {v}" for k, v in errors.items() if k != "ungrounded_citation")]
+          if any(k != "ungrounded_citation" for k in errors) else []),
+        ""]
+
+
+def main(argv: list[str], truth_file: Path = TRUTH_FILE, report: Path = REPORT,
+         title: str = "ClaimSense evaluation report") -> list[str]:
     include_mock = "--include-mock" in argv
-    if not TRUTH_FILE.exists():
+    if not truth_file.exists():
         sys.exit("No answer key found. Run `python -m app.seed` first.")
-    truth = json.loads(TRUTH_FILE.read_text(encoding="utf-8"))
+    truth = json.loads(truth_file.read_text(encoding="utf-8"))
     db = SessionLocal()
     claims = {c.claim_number: c for c in db.scalars(select(Claim))}
     if not claims:
@@ -103,15 +151,20 @@ def main(argv: list[str]):
             live_claims.add(tc["claim_number"])
 
     # ---------- rule and routing accuracy
+    advisory: list[str] = []
+
     def rule_metrics(subset):
         tp, fp, fn = defaultdict(int), defaultdict(int), defaultdict(int)
         route = {"tp": 0, "fp": 0, "fn": 0, "tn": 0}
         wrong = []
+        advisory.clear()
         for tc in truth["claims"]:
             if tc["claim_number"] not in subset:
                 continue
             claim = claims[tc["claim_number"]]
-            got, exp = {f.rule_code for f in claim.findings}, set(tc["expected_rules"])
+            got, exp = {f.rule_code for f in claim.findings} - ADVISORY, set(tc["expected_rules"])
+            if any(f.rule_code in ADVISORY for f in claim.findings):
+                advisory.append(tc["claim_number"])
             for r in got & exp:
                 tp[r] += 1
             for r in got - exp:
@@ -131,7 +184,7 @@ def main(argv: list[str]):
     rules = sorted(set(tp) | set(fp) | set(fn))
 
     # ---------- report
-    out = [f"# ClaimSense evaluation report", "",
+    out = [f"# {title}", "",
            f"Generated {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}. Models scored: {', '.join(sorted(models)) or 'none'}.",
            ""]
     out += ["## AI field extraction", ""]
@@ -162,11 +215,17 @@ def main(argv: list[str]):
             f"{route['fp'] + route['tn']}.", ""]
     if wrong:
         out += ["Claims whose rules differ from the answer key:", ""] + [f"- {w}" for w in wrong] + [""]
-    REPORT.parent.mkdir(exist_ok=True)
-    REPORT.write_text("\n".join(out), encoding="utf-8")
+    if advisory:
+        out += [f"Advisory notes (SCAN_UNCLEAR: a scanned value is probably misread; shown to the reviewer, not "
+                f"counted as a rule hit and never routes a claim on its own): **{len(advisory)}** claims "
+                f"({', '.join(advisory[:10])}{' ...' if len(advisory) > 10 else ''}).", ""]
+    out += briefing_section(db, claims, include_mock)
+    report.parent.mkdir(exist_ok=True)
+    report.write_text("\n".join(out), encoding="utf-8")
     print("\n".join(out))
-    print(f"\nSaved to {REPORT}")
+    print(f"\nSaved to {report}")
     db.close()
+    return out
 
 
 if __name__ == "__main__":

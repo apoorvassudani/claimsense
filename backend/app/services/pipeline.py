@@ -3,11 +3,13 @@ One trace ID covers the whole request."""
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ..models import Claim, Claimant, Document, Extraction, Finding, TraceEvent
+from ..models import Claim, Claimant, Document, Extraction, Finding, Policy, TraceEvent
 from ..observability import StageRecorder, current_trace_id, log_event, tracer
+from . import policy_rag
 from .extraction import extract_document
 from .graph import build_claim_graph, linked_claims, norm
-from .rules import ClaimContext, evaluate, score
+from .reviewer_summary import summarize_claim
+from .rules import ClaimContext, _code, evaluate, score
 
 
 def _latest_valid(db: Session, document_id: int) -> Extraction | None:
@@ -19,7 +21,7 @@ def _valid_extractions(db: Session, claim: Claim) -> list[Extraction]:
     return [e for d in claim.documents if (e := _latest_valid(db, d.document_id))]
 
 
-def process_claim(db: Session, claim: Claim) -> dict:
+def process_claim(db: Session, claim: Claim, summarize: bool = True) -> dict:
     with tracer.start_as_current_span("claim.process") as span:
         span.set_attribute("claimsense.claim_id", claim.claim_id)
         trace_id = current_trace_id()
@@ -34,7 +36,7 @@ def process_claim(db: Session, claim: Claim) -> dict:
             exts = _valid_extractions(db, claim)
             build_claim_graph(db, claim, exts)
         with rec.stage("rules.evaluate"):
-            fields = [e.fields for e in exts]
+            fields = [dict(e.fields, _scanned=bool(e.document.ocr_engine)) for e in exts]
             hashes = [d.sha256 for d in claim.documents]
             dup_docs = db.scalars(select(Claim.claim_number).join(Document)
                                   .where(Document.sha256.in_(hashes), Claim.claim_id != claim.claim_id)).all()
@@ -62,8 +64,22 @@ def process_claim(db: Session, claim: Claim) -> dict:
                 reported_date=claim.reported_date, claimed_amount=float(claim.claimed_amount),
                 doc_types={d.doc_type for d in claim.documents}, extractions=fields,
                 duplicate_docs=sorted(set(dup_docs)), duplicate_invoices=sorted(dup_inv),
-                claimant_code=claim.claimant.claimant_code, links=links)
+                claimant_code=claim.claimant.claimant_code, links=links,
+                known_policies={_code(p) for p in db.scalars(select(Policy.policy_number))},
+                known_people=list(db.scalars(select(Claimant.full_name))))
             hits = evaluate(ctx)
+        rag_mode, rag_error, clauses_by_rule = "none", None, {}
+        if hits:
+            try:
+                with rec.stage("rag.retrieve"):
+                    for h in hits:
+                        top, rag_mode = policy_rag.clauses_for_rule(h.rule_code, claim.claim_type, k=3)
+                        clauses_by_rule[h.rule_code] = top
+                        if top:  # best clause is shown under the flag; all three go to the briefing
+                            h.evidence = {**h.evidence, "policy_clause": top[0]}
+            except Exception as exc:  # retrieval is evidence only: never block the rules or the score
+                rag_error = getattr(exc, "category", type(exc).__name__)
+                clauses_by_rule = {}
         with rec.stage("db.save_findings"):
             claim.findings.clear()
             for h in hits:
@@ -74,12 +90,19 @@ def process_claim(db: Session, claim: Claim) -> dict:
         for ev in rec.events:
             db.add(TraceEvent(**ev))
         db.commit()
+        if summarize and hits:
+            finding_dicts = [{"rule_code": h.rule_code, "severity": h.severity, "message": h.message,
+                              "evidence": h.evidence} for h in hits]
+            summary_run = summarize_claim(db, claim, finding_dicts, clauses_by_rule, trace_id)
+            if summary_run:
+                runs.append(summary_run)
         log_event("claim_processed", trace_id=trace_id, claim_id=claim.claim_id, risk_score=claim.risk_score,
-                  risk_level=claim.risk_level, findings=len(hits), failed_runs=sum(r.status == "FAILED" for r in runs))
+                  risk_level=claim.risk_level, findings=len(hits), failed_runs=sum(r.status == "FAILED" for r in runs),
+                  retrieval_mode=rag_mode, retrieval_error=rag_error)
         return {
             "claim_id": claim.claim_id, "trace_id": trace_id, "risk_score": claim.risk_score,
             "risk_level": claim.risk_level, "status": claim.status,
-            "runs": [{"run_id": r.run_id, "document_id": r.document_id, "status": r.status,
+            "runs": [{"run_id": r.run_id, "task": r.task, "document_id": r.document_id, "status": r.status,
                       "error_type": r.error_type, "latency_ms": r.latency_ms} for r in runs],
             "findings": [{"rule_code": h.rule_code, "severity": h.severity, "message": h.message,
                           "evidence": h.evidence} for h in hits],

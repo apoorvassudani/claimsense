@@ -1,0 +1,18 @@
+CLAIM FORM - HEALTH
+Northwind General Insurance Co. Ltd. (fictional)
+
+Section 1: Policy details
+  Policy number ............ NW/HLT/2026/000039
+  Product .................. Individual Health Policy
+Section 2: Insured person
+  Full name ................ LAKSHMI NAIR
+  Mobile ................... +91 55325 39556
+Section 3: Loss details
+  Admitted on .............. 22.07.2026
+  Location ................. Lajpat Nagar, New Delhi
+  Description .............. Cataract (left eye) - phacoemulsification with IOL
+  Estimated loss ........... ₹74,720.00
+
+Signed by the insured on 30.07.2026
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

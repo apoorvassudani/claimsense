@@ -1,0 +1,16 @@
+To,
+The Claims Manager,
+Northwind General Insurance Co. Ltd. (fictional)
+
+Subject: Claim under policy NW/MTR/2025/000074
+
+Dear Sir/Madam,
+
+I, Karan Joshi, residing at House No. 345, Powai, Mumbai - 400076, wish to intimate a claim under the above policy. On 03 March 2026, my vehicle MH 03 ZW 7553 (Kia Seltos) was damaged: windshield and bonnet damaged by a falling branch.
+I request reimbursement of Rs. 24,131/- as per the attached documents.
+
+Yours faithfully,
+Karan Joshi
+Date: 2026-03-05
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD

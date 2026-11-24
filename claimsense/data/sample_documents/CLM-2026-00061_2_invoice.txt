@@ -1,0 +1,18 @@
+NORTHGATE MOTOR WORKS
+Rohini Sector 9, New Delhi - 110085     GSTIN: 07AABFT1777K1Z3
+
+TAX INVOICE
+Invoice No: NOR/00019          Date: 2026-05-18
+Customer: DEEPAK NAIR     Vehicle: DL 8C ZY 3440     Model: Kia Seltos
+Insurance Policy: NW/MTR/2025/000019
+----------------------------------------------------------------
+Sr  Description                              Qty          Amount
+1   Radiator                                   1        9,340.00
+2   Front bumper assembly                      1        8,730.00
+3   Labour charges                             1        8,020.00
+----------------------------------------------------------------
+                                       Sub-total       26,090.00
+                                       GST @ 18%        4,696.20
+                                     GRAND TOTAL     Rs 30786.20
+
+SYNTHETIC TEST DOCUMENT - NOT A REAL RECORD
